@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		60B8609E2CCD212C009C840B /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 60B8609D2CCD212C009C840B /* Moya */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		60B85FD62CCCFB82009C840B /* MovieMaster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieMaster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60B8609E2CCD212C009C840B /* Moya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +38,7 @@
 			isa = PBXGroup;
 			children = (
 				60B85FD82CCCFB82009C840B /* MovieMaster */,
+				60B8609C2CCD212C009C840B /* Frameworks */,
 				60B85FD72CCCFB82009C840B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +49,13 @@
 				60B85FD62CCCFB82009C840B /* MovieMaster.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		60B8609C2CCD212C009C840B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +78,7 @@
 			);
 			name = MovieMaster;
 			packageProductDependencies = (
+				60B8609D2CCD212C009C840B /* Moya */,
 			);
 			productName = MovieMaster;
 			productReference = 60B85FD62CCCFB82009C840B /* MovieMaster.app */;
@@ -336,6 +350,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		60B8609D2CCD212C009C840B /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60B8604D2CCD0E89009C840B /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 60B85FCE2CCCFB82009C840B /* Project object */;
 }
