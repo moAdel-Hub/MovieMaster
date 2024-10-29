@@ -10,8 +10,9 @@ import CoreData
 
 protocol DataBaseProtocol {
     func save(object: NSManagedObject)
-    func fetchMovies()
-    func fetchMovieDetails()
+    func fetchMovies(with request: NSFetchRequest<PopularMovieResponse>) -> [PopularMovieResponse]?
+    func fetchMovieDetails(with request: NSFetchRequest<MovieDetailsResponse>) -> [MovieDetailsResponse]?
+    func clearCachedMovies()
 }
 
 
@@ -62,4 +63,39 @@ final class CoreDataManager {
 
         return persistentStoreCoordinator
     }()
+}
+
+extension CoreDataManager: DataBaseProtocol {
+    func save(object: NSManagedObject) {
+        if managedObjectContext.hasChanges {
+            managedObjectContext.perform { [weak self] in
+                guard let self else { return }
+                self.managedObjectContext.insert(object)
+                try? self.managedObjectContext.save()
+            }
+        }
+    }
+    
+    func fetchMovies(with request: NSFetchRequest<PopularMovieResponse>) -> [PopularMovieResponse]? {
+        let objects = try? managedObjectContext.fetch(request)
+        return objects
+    }
+    
+    func fetchMovieDetails(with request: NSFetchRequest<MovieDetailsResponse>) -> [MovieDetailsResponse]? {
+        let objects = try? managedObjectContext.fetch(request)
+        return objects
+    }
+    
+    func clearCachedMovies() {
+        let entities = ["Movie", "PopularMovieResponse", "MovieDetailsResponse"]
+        managedObjectContext.perform { [weak self] in
+            guard let self else { return }
+            for entity in entities {
+                let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entity)
+                let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                let result = try? self.managedObjectContext.execute(deleteRequest)
+                try? managedObjectContext.save()
+            }
+        }
+    }
 }

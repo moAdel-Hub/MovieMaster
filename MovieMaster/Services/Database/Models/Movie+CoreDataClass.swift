@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 @objc(Movie)
-public class Movie: NSManagedObject, Decodable {
+public class Movie: NSManagedObject, Codable {
 
     public required convenience init(from decoder: any Decoder) throws {
         // Store to core data
@@ -26,6 +26,17 @@ public class Movie: NSManagedObject, Decodable {
         releaseDate = try container.decode(String.self, forKey: .releaseDate)
         title = try container.decode(String.self, forKey: .title)
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(overview, forKey: .overview)
+        try container.encode(title, forKey: .title)
+        try container.encode(posterPath, forKey: .posterPath)
+        try container.encode(releaseDate, forKey: .releaseDate)
+        try container.encode(rating, forKey: .rating)
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case overview

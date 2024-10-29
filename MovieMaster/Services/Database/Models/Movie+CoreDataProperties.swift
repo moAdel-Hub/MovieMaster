@@ -22,6 +22,7 @@ extension Movie {
     @NSManaged public var rating: Double
     @NSManaged public var releaseDate: String?
     @NSManaged public var title: String?
+    @NSManaged public var response: PopularMovieResponse?
 
 }
 
