@@ -15,7 +15,11 @@ struct MovieListView: View {
             VStack(alignment: .leading) {
                     List {
                         ForEach(viewModel.movies, id: \.self) { movie in
-                            MovieCardView(movie: movie)
+                            let movieDetailsViewModel = MovieDetailsViewModel(movieID: Int(movie.id))
+                            NavigationLink(destination: MovieDetailsView(viewModel: movieDetailsViewModel)) {
+                                MovieCardView(movie: movie)
+                            }
+                            
                         }
                         if viewModel.canLoadMore {
                             Text("loading More")

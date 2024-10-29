@@ -12,6 +12,7 @@
     <entity name="MovieDetailsResponse" representedClassName="MovieDetailsResponse" syncable="YES">
         <attribute name="backdrop" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lastUpdateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="overview" optional="YES" attributeType="String"/>
         <attribute name="releaseDate" optional="YES" attributeType="String"/>
         <attribute name="tagline" optional="YES" attributeType="String"/>

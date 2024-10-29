@@ -11,7 +11,7 @@ import Alamofire
 
 protocol MoviesNetworkManagerProtocol {
     func fetchPopularMovies(page: Int, completion: @escaping (Result<PopularMovieResponse, Error>) -> ())
-    func fetchMovieDetails(id: Int, completion: @escaping (Result<Movie, Error>) -> ())
+    func fetchMovieDetails(id: Int, completion: @escaping (Result<MovieDetailsResponse, Error>) -> ())
 }
 
 
@@ -39,12 +39,12 @@ final class MoviesNetworkManager: MoviesNetworkManagerProtocol {
         }
     }
     
-    func fetchMovieDetails(id: Int, completion: @escaping (Result<Movie, Error>) -> ()) {
+    func fetchMovieDetails(id: Int, completion: @escaping (Result<MovieDetailsResponse, Error>) -> ()) {
         dataProvider.request(.movieDetails(movieID: id)) { result in
             switch result {
             case .success(let result):
                 do {
-                    let movieDetails = try JSONDecoder().decode(Movie.self, from: result.data)
+                    let movieDetails = try JSONDecoder().decode(MovieDetailsResponse.self, from: result.data)
                     completion(.success(movieDetails))
                 } catch {
                     completion(.failure(NetworkErrors.failedToFetchData))
