@@ -7,7 +7,9 @@
 
 import Foundation
 
-enum AppConstants { }
+enum AppConstants {
+    static let CoreDataModelName = "MovieMasterDB"
+}
 
 enum APIConstant {
     static let baseURL = "https://api.themoviedb.org/3/movie"
