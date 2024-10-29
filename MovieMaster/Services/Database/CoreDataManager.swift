@@ -93,7 +93,7 @@ extension CoreDataManager: DataBaseProtocol {
             for entity in entities {
                 let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entity)
                 let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                let result = try? self.managedObjectContext.execute(deleteRequest)
+                let _ = try? self.managedObjectContext.execute(deleteRequest)
                 try? managedObjectContext.save()
             }
         }

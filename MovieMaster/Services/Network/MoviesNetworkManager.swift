@@ -24,9 +24,6 @@ final class MoviesNetworkManager: MoviesNetworkManagerProtocol {
     }
     
     func fetchPopularMovies(page: Int, completion: @escaping (Result<PopularMovieResponse, Error>) -> ()) {
-        if !checkNetworkReachability() {
-            completion(.failure(NetworkErrors.noInternet))
-        }
         dataProvider.request(.popularMovie(page: page)) { result in
             switch result {
             case .success(let result):
@@ -43,9 +40,6 @@ final class MoviesNetworkManager: MoviesNetworkManagerProtocol {
     }
     
     func fetchMovieDetails(id: Int, completion: @escaping (Result<Movie, Error>) -> ()) {
-        if !checkNetworkReachability() {
-            completion(.failure(NetworkErrors.noInternet))
-        }
         dataProvider.request(.movieDetails(movieID: id)) { result in
             switch result {
             case .success(let result):
@@ -59,12 +53,5 @@ final class MoviesNetworkManager: MoviesNetworkManagerProtocol {
                 completion(.failure(NetworkErrors.failedToFetchData))
             }
         }
-    }
-    
-    private func checkNetworkReachability() -> Bool {
-        guard let reachability = NetworkReachabilityManager(), reachability.isReachable else {
-            return false
-        }
-        return true
     }
 }

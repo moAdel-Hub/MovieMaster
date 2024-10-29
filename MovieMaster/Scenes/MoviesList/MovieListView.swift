@@ -8,14 +8,32 @@
 import SwiftUI
 
 struct MovieListView: View {
+    
+    @StateObject var viewModel = MoviesListViewModel()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            VStack(alignment: .leading) {
+                    List {
+                        ForEach(viewModel.movies, id: \.self) { movie in
+                            MovieCardView(movie: movie)
+                        }
+                        if viewModel.canLoadMore {
+                            Text("loading More")
+                                .task {
+                                    self.viewModel.loadMore()
+                                }
+                        }
+                    }
+            }
+            .navigationTitle("Latest Movies")
+            .alert("", isPresented: $viewModel.showAlert, presenting: viewModel.userError) { _ in
+                Button("Ok") {
+                    viewModel.resetError()
+                }
+            } message: { error in
+                Text(error.localizedDescription)
+            }
         }
-        .padding()
     }
 }
 

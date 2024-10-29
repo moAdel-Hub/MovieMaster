@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 protocol MoviesListRepositoryProtocol {
     func fetchMoviesList(page: Int, completion: @escaping (Result<PopularMovieResponse, Error>) -> Void)
@@ -17,19 +18,25 @@ final class MoviesListRepository: MoviesListRepositoryProtocol {
     let moviesDB: DataBaseProtocol
     private let cacheTimeout: TimeInterval = 4 * 60 * 60
     
-    init(moviesNetworkService: MoviesNetworkManagerProtocol, moviesDB: DataBaseProtocol) {
+    init(moviesNetworkService: MoviesNetworkManagerProtocol = MoviesNetworkManager(), moviesDB: DataBaseProtocol = CoreDataManager.shared) {
         self.moviesNetworkService = moviesNetworkService
         self.moviesDB = moviesDB
     }
     
     func fetchMoviesList(page: Int, completion: @escaping (Result<PopularMovieResponse, Error>) -> Void) {
+        
         if let localStorage = fetchFromDB(page: page), !localStorage.isEmpty, let lastUpdate = localStorage.first?.lastUpdateDate {
-            if shouldUpdateDB(lastUpdated: lastUpdate) {
+            if shouldUpdateDB(lastUpdated: lastUpdate) || !checkNetworkReachability() {
                 completion(.success(localStorage.first!))
                 return
             } else {
                 moviesDB.clearCachedMovies()
             }
+        }
+        
+        guard checkNetworkReachability() else {
+            completion(.failure(NetworkErrors.noInternet))
+            return
         }
         
         moviesNetworkService.fetchPopularMovies(page: page) { [weak self] result in
@@ -54,5 +61,12 @@ final class MoviesListRepository: MoviesListRepositoryProtocol {
     private func shouldUpdateDB(lastUpdated: Date) -> Bool {
         let dif = Date().timeIntervalSince(lastUpdated)
         return dif < cacheTimeout
+    }
+    
+    private func checkNetworkReachability() -> Bool {
+        guard let reachability = NetworkReachabilityManager(), reachability.isReachable else {
+            return false
+        }
+        return true
     }
 }
